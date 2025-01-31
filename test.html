@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fabric.js Design Editor</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    canvas {
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+  <div class="flex flex-col items-center space-y-4">
+    <h1 class="text-2xl font-bold text-gray-700">Quick Test: Fabric.js with TailwindCSS</h1>
+    <div class="space-x-4">
+      <button id="addText" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Add Text</button>
+      <button id="addImage" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Add Image</button>
+      <button id="clearCanvas" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Clear Canvas</button>
+    </div>
+    <canvas id="canvas" width="600" height="400"></canvas>
+  </div>
+
+  <script>
+    // Initialize Fabric.js canvas
+    const canvas = new fabric.Canvas('canvas');
+
+    // Add Text
+    document.getElementById('addText').addEventListener('click', () => {
+      const text = new fabric.Textbox('Edit Me!', {
+        left: 100,
+        top: 100,
+        fontSize: 20,
+        fill: 'black',
+      });
+      canvas.add(text);
+    });
+
+    // Add Image
+    document.getElementById('addImage').addEventListener('click', () => {
+      fabric.Image.fromURL('https://via.placeholder.com/150', (img) => {
+        img.set({
+          left: 150,
+          top: 150,
+          scaleX: 0.5,
+          scaleY: 0.5,
+        });
+        canvas.add(img);
+      });
+    });
+
+    // Clear Canvas
+    document.getElementById('clearCanvas').addEventListener('click', () => {
+      canvas.clear();
+    });
+  </script>
+
+</body>
+</html>
