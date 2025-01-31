@@ -13,6 +13,7 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
   <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
     <h1 class="text-xl font-bold text-gray-800 text-center mb-4">Submit Your Details</h1>
+    
     <form id="form" class="space-y-4">
       <!-- Name -->
       <div>
@@ -45,17 +46,23 @@
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Submit</button>
+      <button type="submit" id="submitBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+        Submit
+      </button>
     </form>
+
     <!-- Response message -->
-    <p id="responseMessage" class="mt-4 text-center text-sm"></p>
+    <p id="responseMessage" class="mt-4 text-center text-sm font-medium"></p>
   </div>
 
   <script>
     document.getElementById('form').addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const submitButton = document.querySelector('button[type="submit"]');
+      const submitButton = document.getElementById('submitBtn');
+      const responseMessage = document.getElementById('responseMessage');
+
+      // Disable button and show loading state
       submitButton.disabled = true;
       submitButton.textContent = 'Submitting...';
 
@@ -68,28 +75,29 @@
       };
 
       try {
-        // Update this URL to your live backend URL
+        // Update with your Render backend URL
         const response = await fetch('https://backend-test-p51s.onrender.com/api/save', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
 
         if (response.ok) {
           const result = await response.json();
-          document.getElementById('responseMessage').textContent = result.message;
-          document.getElementById('responseMessage').classList.add('text-green-500');
-          alert('Form submitted successfully!');
+          responseMessage.textContent = result.message;
+          responseMessage.className = 'mt-4 text-green-600 text-center';
+          alert('✅ Form submitted successfully!');
+
+          // Reset form
+          document.getElementById('form').reset();
         } else {
           const errorResult = await response.json();
-          document.getElementById('responseMessage').textContent = errorResult.message || 'Error submitting the form.';
-          document.getElementById('responseMessage').classList.add('text-red-500');
+          responseMessage.textContent = errorResult.message || '❌ Error submitting the form.';
+          responseMessage.className = 'mt-4 text-red-600 text-center';
         }
       } catch (error) {
-        document.getElementById('responseMessage').textContent = 'Error submitting the form. Please try again.';
-        document.getElementById('responseMessage').classList.add('text-red-500');
+        responseMessage.textContent = '❌ Network error. Please try again.';
+        responseMessage.className = 'mt-4 text-red-600 text-center';
       } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Submit';
