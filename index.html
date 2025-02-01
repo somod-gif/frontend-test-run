@@ -62,7 +62,7 @@
         message: document.getElementById('message').value,
       };
       try {
-        const response = await fetch('https://backend-test-p51s.onrender.com/api/forms', {
+        const response = await fetch('https://backend-test-p51s.onrender.com/api/save', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
